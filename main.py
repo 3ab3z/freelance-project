@@ -1,72 +1,85 @@
 import hashlib
 from typing import List
 
-a = ""
-b = ""
-job_status = ""
-
-
 def signup():
     status = input("Hi, are you a (f)reelancer or a (c)orporation?" + "\n")
     if status == "f":
         username = input("Enter freelancer username: ")
         email = input("Enter email: ")
         password = input("Enter password: ")
-        conf_pwd = input("Confirm password: ")
-        if conf_pwd == password:
-            enc = conf_pwd.encode()
-            hash1 = hashlib.md5(enc).hexdigest()
-            with open("freelancer_credentials.txt", "w") as f:
-                f.write(username + "\n")
-                f.write(hash1)
-            f.close()
-            print("You have registered successfully!")
-        else:
-            print("Password is not same as above! \n")
+        while 1:
+            conf_pwd = input("Confirm password: ")
+            if conf_pwd == password:
+                enc = conf_pwd.encode()
+                hash1 = hashlib.md5(enc).hexdigest()
+                with open("freelancer_credentials.txt", "w") as f:
+                    f.write(username + "\n")
+                    f.write(hash1)
+                f.close()
+                print("You have registered successfully!")
+                break
+            else:
+                print("Password is not same as above, please input again. \n")
     elif status == "c":
         username = input("Enter corporation username: ")
         email = input("Enter email: ")
         password = input("Enter password: ")
-        conf_pwd = input("Confirm password: ")
-        if conf_pwd == password:
-            enc = conf_pwd.encode()
-            hash1 = hashlib.md5(enc).hexdigest()
-            with open("corp_credentials.txt", "w") as f:
-                f.write(username + "\n")
-                f.write(hash1)
-            f.close()
-            print("You have registered successfully!")
-        else:
-            print("Password is not same as above! \n")
+        while 1:
+            conf_pwd = input("Confirm password: ")
+            if conf_pwd == password:
+                enc = conf_pwd.encode()
+                hash1 = hashlib.md5(enc).hexdigest()
+                with open("corp_credentials.txt", "w") as f:
+                    f.write(username + "\n")
+                    f.write(hash1)
+                f.close()
+                print("You have registered successfully!")
+                break
+            else:
+                print("Password is not same as above, please input again.\n")
 
 def login():
+    play = 4
     status = input("Are you a (f)reelancer or a (c)orporation?" + "\n")
     if status == "f":
-        username = input("Enter username: ")
-        password = input("Enter password: ")
-        auth = password.encode()
-        auth_hash = hashlib.md5(auth).hexdigest()
-        with open("freelancer_credentials.txt", "r") as f:
-            stored_fren_username, stored_password = f.read().split("\n")
-        f.close()
-        if username == stored_fren_username and auth_hash == stored_password:
-            print("Logged in Successfully!")
-            freelancer_page()
-        else:
-            print("Login failed! \n")
+        while play>=0:
+            username = input("Enter username: ")
+            password = input("Enter password: ")
+            auth = password.encode()
+            auth_hash = hashlib.md5(auth).hexdigest()
+            with open("freelancer_credentials.txt", "r") as f:
+                stored_fren_username, stored_password = f.read().split("\n")
+            f.close()
+            if username == stored_fren_username and auth_hash == stored_password:
+                print("Logged in Successfully!")
+                freelancer_page()
+                break
+            else:
+                print("Login failed!, you have " , play , " attempts to try again\n")
+                play=play-1
+        if(play<0):
+            print("you can't login, try creating account")
+            signup()
+
     elif status == "c":
-        username = input("Enter username: ")
-        password = input("Enter password: ")
-        auth = password.encode()
-        auth_hash = hashlib.md5(auth).hexdigest()
-        with open("corp_credentials.txt", "r") as f:
-            stored_corp_username, stored_corp_password = f.read().split("\n")
-        f.close()
-        if username == stored_corp_username and auth_hash == stored_corp_password:
-            print("Logged in Successfully!")
-            corp_page()
-        else:
-            print("Login failed! \n")
+        while play >=0:
+            username = input("Enter username: ")
+            password = input("Enter password: ")
+            auth = password.encode()
+            auth_hash = hashlib.md5(auth).hexdigest()
+            with open("corp_credentials.txt", "r") as f:
+                stored_corp_username, stored_corp_password = f.read().split("\n")
+            f.close()
+            if username == stored_corp_username and auth_hash == stored_corp_password:
+                print("Logged in Successfully!")
+                corp_page()
+                break
+            else:
+                print("Login failed!, you have ",play," attempts to try again\n")
+                play=play-1
+            if play <0:
+                print("you can't login, try creating account")
+                signup()
 
 def corp_page():
     with open("corp_credentials.txt", "r") as f:
@@ -75,29 +88,26 @@ def corp_page():
         username = stored_username
         corp_chosen = input("Hi " + username + " Do you want to (l)ist a job or (v)iew applicants?")
         if corp_chosen == "l":
-            job1 = input("Please enter the job1's name: " + "\n")
-            job1_details = input("Please enter the job's details: " + "\n")
-            job2 = input("Please enter the job2's name: " + "\n")
-            job2_details = input("Please enter the job's details: " + "\n")
-            job3 = input("Please enter the job3's name: " + "\n")
-            job3_details = input("Please enter the job's details: " + "\n")
-            job4 = input("Please enter the job4's name: " + "\n")
-            job4_details = input("Please enter the job's details: " + "\n")
-            job5 = input("Please enter the job5's name: " + "\n")
-            job5_details = input("Please enter the job's details: " + "\n")
-            with open("jobs.txt", "w") as f:
-                f.write(job1 + ":" + "\n")
-                f.write(job1_details + "\n")
-                f.write(job2 + ":" + "\n")
-                f.write(job2_details + "\n")
-                f.write(job3 + ":" + "\n")
-                f.write(job3_details + "\n")
-                f.write(job4 + ":" + "\n")
-                f.write(job4_details + "\n")
-                f.write(job5 + ":" + "\n")
-                f.write(job5_details)
-            f.close()
-
+            xo = int(input("enter how many jobs you want to declare: "))
+            lp = 1
+            job = []
+            xp = 0
+            job_details = []
+            while xo >= lp:
+                print("job", lp)
+                job.append(str(input("enter job title: ")))
+                job_details.append(input("enter job description: "))
+                if xp == 0:
+                    with open("jobs.txt", "w") as f:
+                        f.write(job[xp] + ":" + "\n")
+                        f.write(job_details[xp] + "\n")
+                else:
+                    with open("jobs.txt", "a") as f:
+                        f.write(job[xp] + ":" + "\n")
+                        f.write(job_details[xp] + "\n")
+                f.close()
+                lp = lp + 1
+                xp = xp + 1
         elif corp_chosen == "v":
             with open("job_applied.txt", "r")as f:
                 job_applied = f.read()
