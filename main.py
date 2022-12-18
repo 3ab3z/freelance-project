@@ -102,11 +102,19 @@ def corp_page():
             j = 1
             while (i<= num and j <= num):
                 print("job",i, ":")
-
                 title = input("Enter job title: \n")
                 id = input("Enter job id: \n")
                 required_skills =input ("Enter required skills: \n")
                 job_describ =input("Enter job description: ")
+                if i ==1:
+                    with open("titles.txt", "w") as g:
+                        g.write(title+"\n")
+                        g.close()
+                else:
+                    g = open("titles.txt","a")
+                    g.write(title+"\n")
+                    g.close()
+
                 with open("jobs.txt", "r")as f:
                     xlines = len(f.readlines())
                     f.close()
@@ -168,6 +176,7 @@ def freelancer_page():
     counter = 1
     check_job = 0
     lines = 0
+    limit=0
 
     with open(f_username+".txt", "r") as f:
         stored_f_username, stored_password = f.read().split("\n")
@@ -177,19 +186,18 @@ def freelancer_page():
         viewjobs = input("(y)es, or (n)o\n")
         if viewjobs == "y":
             with open("jobs.txt", "r") as f:
-                limit = len(f.readlines())
+                for line in open("jobs.txt").readlines():
+                    limit+=1
                 job1 = f.read().splitlines()
                 f.close()
-            while lines <= limit:
-                print(counter, ": ", job1[lines]+"\n")
+            while lines <= limit-1:
+                print(counter, ": ", job1[lines],"\n")
                 lines = lines + 1
                 counter = counter + 1
             check_job = int(input("Choose a job to see its description, skills needed, and furthermore.\n(Please enter the job's number)\n"))
-            job_number = check_job - 1
+            job_num = check_job - 1
             if check_job <= limit:
-                with open("jobs.txt", "r")as f:
-                    job_name = f.read().splitlines()[job_number]
-                    f.close()
+                job_name = job1[job_num]
                 job_file_name = job_name + ".txt"
                 with open(job_file_name, "r")as f:
                     job_title = f.read().split("\n")
