@@ -177,7 +177,7 @@ def freelancer_page():
         viewjobs = input("(y)es, or (n)o\n")
         if viewjobs == "y":
             with open("jobs.txt", "r") as f:
-                limit = 35
+                limit = len(f.readlines())
                 job1 = f.read().splitlines()
                 f.close()
             while lines <= limit:
