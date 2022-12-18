@@ -177,11 +177,10 @@ def freelancer_page():
         viewjobs = input("(y)es, or (n)o\n")
         if viewjobs == "y":
             with open("jobs.txt", "r") as f:
-                job1 = f.read().split("\n")
-                check_numberline=len(f.readline())
-                limit = len(f.readline())
+                limit = 35
+                job1 = f.read().splitlines()
                 f.close()
-            while lines <= check_numberline:
+            while lines <= limit:
                 print(counter, ": ", job1[lines]+"\n")
                 lines = lines + 1
                 counter = counter + 1
@@ -232,7 +231,7 @@ def freelancer_page():
 
 
 while 1:
-    print("********** Login System **********")
+    print("\n---------- Login System ----------\n")
     print("1.Signup")
     print("2.Login")
     print("3.Exit")
