@@ -1,6 +1,7 @@
 import hashlib
 from typing import List
 
+
 def signup():
     status = input("Hi, are you a (f)reelancer or a (c)orporation?" + "\n")
     if status == "f":
@@ -12,7 +13,10 @@ def signup():
             if conf_pwd == password:
                 enc = conf_pwd.encode()
                 hash1 = hashlib.md5(enc).hexdigest()
-                with open("freelancer_credentials.txt", "w") as f:
+                with open("usernames.txt", "a")as f:
+                    f.write(username + "\n")
+                    f.close()
+                with open(username+".txt", "w")as f:
                     f.write(username + "\n")
                     f.write(hash1)
                 f.close()
@@ -38,31 +42,33 @@ def signup():
             else:
                 print("Password is not same as above, please input again.\n")
 
+
 def login():
-    play = 4
+    attempts = 4
+    global f_username
     status = input("Are you a (f)reelancer or a (c)orporation?" + "\n")
     if status == "f":
-        while play>=0:
-            username = input("Enter username: ")
+        while attempts >= 0:
+            f_username = input("Enter username: ")
             password = input("Enter password: ")
             auth = password.encode()
             auth_hash = hashlib.md5(auth).hexdigest()
-            with open("freelancer_credentials.txt", "r") as f:
-                stored_fren_username, stored_password = f.read().split("\n")
+            with open(f_username+".txt", "r") as f:
+                stored_f_username, stored_password = f.read().split("\n")
             f.close()
-            if username == stored_fren_username and auth_hash == stored_password:
+            if f_username == stored_f_username and auth_hash == stored_password:
                 print("Logged in Successfully!")
                 freelancer_page()
                 break
             else:
-                print("Login failed!, you have " , play , " attempts to try again\n")
-                play=play-1
-        if(play<0):
+                print("Login failed!, you have ", attempts , " attempts to try again\n")
+                attempts=attempts-1
+        if(attempts<0):
             print("you can't login, try creating account")
             signup()
 
     elif status == "c":
-        while play >=0:
+        while attempts >=0:
             username = input("Enter username: ")
             password = input("Enter password: ")
             auth = password.encode()
@@ -75,11 +81,14 @@ def login():
                 corp_page()
                 break
             else:
-                print("Login failed!, you have ",play," attempts to try again\n")
-                play=play-1
-            if play <0:
-                print("you can't login, try creating account")
-                signup()
+                print("Login failed!, you have ",attempts," attempts to try again\n")
+                attempts=attempts-1
+            if attempts < 0:
+                cr_account = input(print("you can't login, would try creating an account?"))
+                if cr_account == "y":
+                    signup()
+                else:
+                    break
 
 def corp_page():
     with open("corp_credentials.txt", "r") as f:
@@ -88,49 +97,66 @@ def corp_page():
         username = stored_username
         corp_chosen = input("Hi " + username + " Do you want to (l)ist a job or (v)iew applicants?")
         if corp_chosen == "l":
-            xo = int(input("enter how many jobs you want to declare: "))
-            lp = 1
-            job = []
-            xp = 0
-            job_details = []
-            while xo >= lp:
-                print("job", lp)
-                job.append(str(input("enter job title: ")))
-                job_details.append(input("enter job description: "))
-                if xp == 0:
-                    with open("jobs.txt", "w") as f:
-                        f.write(job[xp] + ":" + "\n")
-                        f.write(job_details[xp] + "\n")
+            num = int(input("Enter number of jobs: "))
+            i = 1
+            j = 1
+            while (i<= num and j <= num):
+                print("job",i, ":")
+
+                title = input("Enter job title: \n")
+                id = input("Enter job id: \n")
+                required_skills =input ("Enter required skills: \n")
+                job_describ =input("Enter job description: ")
+                with open("jobs.txt", "r")as f:
+                    xlines = len(f.readlines())
+                    f.close()
+                if xlines == 0:
+                    f = open("Jobs.txt","w")
+                    f.write(title +"\n")
                 else:
-                    with open("jobs.txt", "a") as f:
-                        f.write(job[xp] + ":" + "\n")
-                        f.write(job_details[xp] + "\n")
-                f.close()
-                lp = lp + 1
-                xp = xp + 1
+                    f = open("jobs.txt", "a")
+                    f.write(title + "\n")
+
+                file_Name = title + ".txt"
+                x = open(file_Name, "a")
+                x.write("Title: " + title + "\n")
+                x.write("id: " + id + "\n")
+                x.write("Required skills: " + required_skills + "\n")
+                x.write("Job describtion: " + job_describ )
+                j = j + 1
+                i = i + 1
+
+
         elif corp_chosen == "v":
-            with open("job_applied.txt", "r")as f:
+            with open("usernames.txt", "r")as f:
+                usernames = f.readlines()
+                how_many_usernames = len(f.readlines())
+                f.close()
+            print("Hi, these applicants have applied to a job: \n")
+            print(*usernames, sep =", ")
+            username_chosen = input("Which one do you want to see their application?")
+            user_job_applied = username_chosen + "_job_applied.txt"
+            user_description = username_chosen + "_description.txt"
+            with open(user_job_applied, "r")as f:
                 job_applied = f.read()
                 f.close()
-            with open("applicant_description.txt", "r")as f:
+            with open(user_description, "r")as f:
                 applicant_description = f.read()
                 f.close()
-            with open("freelancer_credentials.txt", "r") as f:
-                stored_username = f.read().split("\n")
-                f.close()
-            print(stored_username[0] + " has applied to " + job_applied)
+            print(username_chosen + " has applied to " + job_applied)
 
-            print(stored_username[0] + "'s bio is: " + "\n" +applicant_description + "\n")
+            print(username_chosen + "'s bio is: " + "\n" +applicant_description + "\n")
+            username_job_status = username_chosen + "_job_status.txt"
             job_status_1 = input("Wanna accept this application? (y/n): ")
             if job_status_1 == "y":
                 job_status = "Accepted"
-                with open("job_status.txt", "w") as f:
+                with open(username_job_status, "w") as f:
                     f.write(job_status)
                     f.close()
 
             else:
                 job_status = "Not Accepted"
-                with open("job_status.txt", "w") as f:
+                with open(username_job_status, "w") as f:
                     f.write(job_status)
                     f.close()
 
@@ -138,61 +164,68 @@ def corp_page():
 
 def freelancer_page():
     zero = 0
-    global stored_fren_username
-    with open("freelancer_credentials.txt", "r") as f:
-        stored_fren_username, stored_password = f.read().split("\n")
+    global stored_f_username
+    counter = 1
+    check_job = 0
+    lines = 0
+
+    with open(f_username+".txt", "r") as f:
+        stored_f_username, stored_password = f.read().split("\n")
         f.close()
-        username = stored_fren_username
-        print("Hi " + stored_fren_username + " there are some jobs available. Do you want to see them?\n")
+        username = stored_f_username
+        print("Hi " + username + " there are some jobs available. Do you want to see them?\n")
         viewjobs = input("(y)es, or (n)o\n")
         if viewjobs == "y":
             with open("jobs.txt", "r") as f:
                 job1 = f.read().split("\n")
-                job1_details = f.read().split("\n")
-                job2 = f.read().split("\n")
-                job2_details = f.read().split("\n")
-                job3 = f.read().split("\n")
-                job3_details = f.read().split("\n")
-                job4 = f.read().split("\n")
-                job4_details = f.read().split("\n")
-                job5 = f.read().split("\n")
-                job5_details = f.read().split("\n")
+                check_numberline=len(f.readline())
+                limit = len(f.readline())
                 f.close()
-            print("1-" + job1[0] + " \n" + job1[1] + "\n" + "2-" + job1[2] + "\n" + job1[3] + "\n" + "3-" + job1[4] + "\n" + job1[5] + "\n" + "4-" + job1[6] + "\n" + job1[7] + "\n" + "5-" + job1[8] + "\n" + job1[9] + "\n")
-        pass
+            while lines <= check_numberline:
+                print(counter, ": ", job1[lines]+"\n")
+                lines = lines + 1
+                counter = counter + 1
+            check_job = int(input("Choose a job to see its description, skills needed, and furthermore.\n(Please enter the job's number)\n"))
+            job_number = check_job - 1
+            if check_job <= limit:
+                with open("jobs.txt", "r")as f:
+                    job_name = f.read().splitlines()[job_number]
+                    f.close()
+                job_file_name = job_name + ".txt"
+                with open(job_file_name, "r")as f:
+                    job_title = f.read().split("\n")
+                    job_id = f.read().split("\n")
+                    job_req_skills = f.read().split("\n")
+                    job_description = f.read()
+                    f.close()
+                print(job_title[0] +"\n" + job_title[1] + "\n" + job_title[2] + "\n" + job_title[3])
+            else:
+                print("Please enter a valid number")
+        else:
+            pass
         job_apply = input("Do you want to apply for a (j)ob? or do you want to see job (s)tatus?" + "\n")
         while job_apply == "j":
-            applicant_description = input("Please inter your bio: " + "\n")
-            with open("applicant_description.txt", "w")as f:
+            applicant_description = input("Please inter your bio, skills, and social numbers: " + "\n")
+            applicant_description_file = username + "_description.txt"
+            with open(applicant_description_file, "w")as f:
                 f.write(applicant_description + "\n")
                 f.close()
             i = int(input("Please enter job's number " + "\n"))
-            if i == 1:
-                with open("job_applied.txt", "w") as f:
-                    f.write(job1[0])
-                    f.close()
-            elif i == 2:
-                with open("job_applied.txt", "w") as f:
-                    f.write(job1[2])
-                    f.close()
-            elif i == 3:
-                with open("job_applied.txt", "w") as f:
-                    f.write(job1[4])
-                    f.close()
-            elif i == 4:
-                with open("job_applied.txt", "w") as f:
-                    f.write(job1[6])
-                    f.close()
-            elif i == 5:
-                with open("job_applied.txt", "w") as f:
-                    f.write(job1[8])
-                    f.close()
+            i_real = i-1
+            job_applied_username = username + "_job_applied.txt"
+            with open("jobs.txt", "r")as f:
+                job_applied_name = f.readlines()[i_real]
+                f.close()
+            with open(job_applied_username, "w")as f:
+                f.write(job_applied_name + "\n")
+                f.close()
             print("Job request sent successfully !")
             break
-        with open("job_status.txt", "r")as f:
-            job_status = f.read()
-            f.close()
         while job_apply == "s":
+            user_job_status = username +"_job_status.txt"
+            with open(user_job_status, "r") as f:
+                job_status = f.read()
+                f.close()
             print("you " + "have been " + job_status + " to your job!" + "\n")
             break
 
