@@ -181,29 +181,31 @@ def corp_page(): #بعرف الصفحة بتاعة الشركة
             user_description = "./users/" + username_chosen + "/" + username_chosen + "_description.txt" #بحدد مكان الفايل اللي بيتكتب فيه الوصف بتاع الفريلانسر
             #this programme is made by Abdelaziz's team
             username_job_status = "./users/" + username_chosen + "/" + username_chosen + "_job_status.txt" #بحدد مكان الفايل اللي هيتخزن فيه هل الفريلانسر اتقبل فالوظيفة ولا لأ
-            with open(user_job_applied, "r")as f: #هفتح الفايل اللي بيخزن فيه الوظيفة اللي الفريلانسر قدم عليها
-                job_applied = f.read() #و هقرا من جواه اسم الوظيفة اللي قدم عليها
-                f.close()
-            with open(user_description, "r")as f: #هفتح الفايل اللي بيتخزن فيه الوصف بتاع الفريلانسر
-                applicant_description = f.read() #و هقرا من جواه الوصف بتاع الفريلانسر
-                f.close()
-            print(username_chosen + " has applied to " + job_applied) #هطبعله اسم الفريلانسر و الوظيفة اللي قدم عليها
-             #this programme is made by Abdelaziz's team
-
-            print(username_chosen + "'s bio is: " + "\n" +applicant_description + "\n") #هنا هطبعله الوصف بتاع الفريلانسر
-            job_status_1 = input("Wanna accept this application? (y/n): ") #هنا بقول للشركة هل عايزين يقبلوا الفريلانسر ولا لأ
-            if job_status_1 == "y": #لو أه
-                job_status = "Accepted"
-                with open(username_job_status, "w") as f:
-                    f.write(job_status) #أكتب مقبول جوا الفايل
+            if os.path.isdir(user_job_applied):  #لو الفايل اللي بيتخزن فيه الوظيفة اللي الشخص قدم عليها موجود اعمل الآتي
+                with open(user_job_applied, "r")as f: #هفتح الفايل اللي بيخزن فيه الوظيفة اللي الفريلانسر قدم عليها
+                    job_applied = f.read() #و هقرا من جواه اسم الوظيفة اللي قدم عليها
                     f.close()
-
-            else: #لو لأ
-                job_status = "Not Accepted"
+                with open(user_description, "r")as f: #هفتح الفايل اللي بيتخزن فيه الوصف بتاع الفريلانسر
+                    applicant_description = f.read() #و هقرا من جواه الوصف بتاع الفريلانسر
+                    f.close()
+                print(username_chosen + " has applied to " + job_applied) #هطبعله اسم الفريلانسر و الوظيفة اللي قدم عليها
                  #this programme is made by Abdelaziz's team
-                with open(username_job_status, "w") as f:
-                    f.write(job_status) #اكتب مش مقبول
-                    f.close()
+
+                print(username_chosen + "'s bio is: " + "\n" +applicant_description + "\n") #هنا هطبعله الوصف بتاع الفريلانسر
+                job_status_1 = input("Wanna accept this application? (y/n): ") #هنا بقول للشركة هل عايزين يقبلوا الفريلانسر ولا لأ
+                if job_status_1 == "y": #لو أه
+                    job_status = "Accepted"
+                    with open(username_job_status, "w") as f:
+                        f.write(job_status) #أكتب مقبول جوا الفايل
+                        f.close()
+                else: #لو لأ
+                    job_status = "Not Accepted"
+                     #this programme is made by Abdelaziz's team
+                    with open(username_job_status, "w") as f:
+                        f.write(job_status) #اكتب مش مقبول
+                        f.close()
+            else: #لو الفايل اللي بيتخزن فيه الوظيفة اللي الشخص قدم عليها مش موجود اعمل الآتي
+                print("user has not applied for a job")
 
 
 
