@@ -181,7 +181,7 @@ def corp_page(): #بعرف الصفحة بتاعة الشركة
             user_description = "./users/" + username_chosen + "/" + username_chosen + "_description.txt" #بحدد مكان الفايل اللي بيتكتب فيه الوصف بتاع الفريلانسر
             #this programme is made by Abdelaziz's team
             username_job_status = "./users/" + username_chosen + "/" + username_chosen + "_job_status.txt" #بحدد مكان الفايل اللي هيتخزن فيه هل الفريلانسر اتقبل فالوظيفة ولا لأ
-            if os.path.isdir(user_job_applied):  #لو الفايل اللي بيتخزن فيه الوظيفة اللي الشخص قدم عليها موجود اعمل الآتي
+            if os.path.isfile(user_job_applied):  #لو الفايل اللي بيتخزن فيه الوظيفة اللي الشخص قدم عليها موجود اعمل الآتي
                 with open(user_job_applied, "r")as f: #هفتح الفايل اللي بيخزن فيه الوظيفة اللي الفريلانسر قدم عليها
                     job_applied = f.read() #و هقرا من جواه اسم الوظيفة اللي قدم عليها
                     f.close()
