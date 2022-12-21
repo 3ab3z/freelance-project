@@ -27,6 +27,7 @@ def signup():
                 break
             else:
                 print("Password is not same as above, please input again. \n")
+                #this programme is made by Abdelaziz's team
     elif status == "c":
         username = input("Enter corporation username: ")
         email = input("Enter email: ")
@@ -59,6 +60,7 @@ def login():
             if os.path.isdir("./users/" + f_username):
                 with open("./users/" + f_username + "/" + f_username + ".txt", "r") as f:
                     stored_f_username, stored_password = f.read().split("\n")
+                    #this programme is made by Abdelaziz's team
                 f.close()
                 if f_username == stored_f_username and auth_hash == stored_password:
                     print("Logged in Successfully!")
@@ -79,6 +81,7 @@ def login():
             username = input("Enter username: ")
             password = input("Enter password: ")
             auth = password.encode()
+            #this programme is made by Abdelaziz's team
             auth_hash = hashlib.md5(auth).hexdigest()
             with open("./users/corp_credentials.txt", "r") as f:
                 stored_corp_username, stored_corp_password = f.read().split("\n")
@@ -156,6 +159,7 @@ def corp_page():
             username_chosen = input("Which one do you want to see their application?")
             user_job_applied = "./users/" + username_chosen + "/" + username_chosen + "_job_applied.txt"
             user_description = "./users/" + username_chosen + "/" + username_chosen + "_description.txt"
+            #this programme is made by Abdelaziz's team
             username_job_status = "./users/" + username_chosen + "/" + username_chosen + "_job_status.txt"
             with open(user_job_applied, "r")as f:
                 job_applied = f.read()
