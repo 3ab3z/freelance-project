@@ -30,6 +30,7 @@ def signup():
                 #this programme is made by Abdelaziz's team
     elif status == "c":
         username = input("Enter corporation username: ")
+         #this programme is made by Abdelaziz's team
         email = input("Enter email: ")
         password = input("Enter password: ")
         while 1:
@@ -39,6 +40,7 @@ def signup():
                 hash1 = hashlib.md5(enc).hexdigest()
                 with open("./users/corp_credentials.txt", "w") as f:
                     f.write(username + "\n")
+                     #this programme is made by Abdelaziz's team
                     f.write(hash1)
                 f.close()
                 print("You have registered successfully!")
@@ -86,6 +88,7 @@ def login():
             with open("./users/corp_credentials.txt", "r") as f:
                 stored_corp_username, stored_corp_password = f.read().split("\n")
             f.close()
+             #this programme is made by Abdelaziz's team
             if username == stored_corp_username and auth_hash == stored_corp_password:
                 print("Logged in Successfully!")
                 corp_page()
@@ -105,6 +108,7 @@ def corp_page():
         if not os.path.isfile("./jobs/jobs.txt"):
             with open("./jobs/jobs.txt", "w")as v:
                 v.close()
+                 #this programme is made by Abdelaziz's team
         stored_username, stored_password= f.read().split("\n")
         f.close()
         username = stored_username
@@ -116,6 +120,7 @@ def corp_page():
             while (i<= num and j <= num):
                 print("job",i, ":")
                 title = input("Enter job title: \n")
+                 #this programme is made by Abdelaziz's team
                 id = input("Enter job id: \n")
                 required_skills =input ("Enter required skills: \n")
                 job_describ =input("Enter job description: ")
@@ -128,6 +133,7 @@ def corp_page():
                 else:
                     f = open("./jobs/jobs.txt", "a")
                     f.write(title + "\n")
+                     #this programme is made by Abdelaziz's team
                 if not os.path.isdir("./jobs/" + title):
                     os.mkdir("./jobs/" + title)
                     file_Name = "./jobs/" + title + "/" + title + ".txt"
@@ -168,6 +174,7 @@ def corp_page():
                 applicant_description = f.read()
                 f.close()
             print(username_chosen + " has applied to " + job_applied)
+             #this programme is made by Abdelaziz's team
 
             print(username_chosen + "'s bio is: " + "\n" +applicant_description + "\n")
             job_status_1 = input("Wanna accept this application? (y/n): ")
@@ -179,6 +186,7 @@ def corp_page():
 
             else:
                 job_status = "Not Accepted"
+                 #this programme is made by Abdelaziz's team
                 with open(username_job_status, "w") as f:
                     f.write(job_status)
                     f.close()
@@ -204,6 +212,7 @@ def freelancer_page():
                 for line in open("./jobs/jobs.txt").readlines():
                     limit+=1
                 job1 = f.read().splitlines()
+                 #this programme is made by Abdelaziz's team
                 f.close()
             while lines <= limit-1:
                 print(counter, ": ", job1[lines],"\n")
@@ -220,6 +229,7 @@ def freelancer_page():
                     job_req_skills = f.read().split("\n")
                     job_description = f.read()
                     f.close()
+                     #this programme is made by Abdelaziz's team
                 print(job_title[0] +"\n" + job_title[1] + "\n" + job_title[2] + "\n" + job_title[3])
             else:
                 print("Please enter a valid number")
@@ -232,6 +242,7 @@ def freelancer_page():
             with open(applicant_description_file, "w")as f:
                 f.write(applicant_description + "\n")
                 f.close()
+                 #this programme is made by Abdelaziz's team
             i = int(input("Please enter job's number " + "\n"))
             i_real = i-1
             job_applied_username = "./users/" + username + "/" + username + "_job_applied.txt"
@@ -251,19 +262,21 @@ def freelancer_page():
             print("you " + "have been " + job_status + " to your job!" + "\n")
             break
 
-
+ #this programme is made by Abdelaziz's team
 
 while 1:
     if not os.path.isdir("users"):
         os.mkdir("users")
     if not os.path.isdir("jobs"):
         os.mkdir("jobs")
+         #this programme is made by Abdelaziz's team
     print("\n---------- Login System ----------\n")
     print("1.Signup")
     print("2.Login")
     print("3.Exit")
     ch = int(input("Enter your choice: "))
     if ch == 1:
+         #this programme is made by Abdelaziz's team
         signup()
     elif ch == 2:
         login()
